@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, Github, X, Calendar, Code } from 'lucide-react';
-import { cardHover, fadeUp, scaleIn } from '../utils/animations';
+import { cardHover, scaleIn } from '../utils/animations';
 
 interface ProjectCardProps {
   project: {

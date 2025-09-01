@@ -75,7 +75,7 @@ const About: React.FC = () => {
               variants={staggerContainer}
               className="grid grid-cols-1 sm:grid-cols-2 gap-4"
             >
-              {quickFacts.map((fact, index) => {
+              {quickFacts.map((fact) => {
                 const IconComponent = iconMap[fact.icon as keyof typeof iconMap];
                 return (
                   <motion.div
