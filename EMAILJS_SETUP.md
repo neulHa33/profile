@@ -25,17 +25,20 @@
 
 3. **Save** 클릭
 
-## 4. 코드에 설정 적용
-`src/pages/Contact.tsx` 파일에서 다음 값들을 실제 값으로 변경:
-
-```typescript
-const result = await emailjs.sendForm(
-  'YOUR_SERVICE_ID',     // Email Services에서 확인
-  'YOUR_TEMPLATE_ID',    // Email Templates에서 확인  
-  formRef.current!,
-  'YOUR_PUBLIC_KEY'      // Account → API Keys에서 확인
-);
+## 4. 환경변수 설정
+1. `env.example` 파일을 `.env`로 복사:
+```bash
+cp env.example .env
 ```
+
+2. `.env` 파일에서 실제 값으로 변경:
+```env
+VITE_EMAILJS_SERVICE_ID=your_actual_service_id
+VITE_EMAILJS_TEMPLATE_ID=your_actual_template_id
+VITE_EMAILJS_PUBLIC_KEY=your_actual_public_key
+```
+
+3. `.env` 파일을 `.gitignore`에 추가 (보안을 위해)
 
 ## 5. 설정 값 찾는 방법
 - **Service ID**: Email Services → 해당 서비스 클릭 → Service ID 복사

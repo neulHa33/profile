@@ -59,21 +59,46 @@ const Contact: React.FC = () => {
     setSubmitStatus('idle');
 
     try {
-      // EmailJS 설정 (실제 사용 시 YOUR_SERVICE_ID, YOUR_TEMPLATE_ID, YOUR_PUBLIC_KEY로 변경)
-      const result = await emailjs.sendForm(
-        'YOUR_SERVICE_ID', // EmailJS 서비스 ID
-        'YOUR_TEMPLATE_ID', // EmailJS 템플릿 ID
-        formRef.current!,
-        'YOUR_PUBLIC_KEY' // EmailJS 공개 키
-      );
+      // 환경변수에서 EmailJS 설정 가져오기
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-      if (result.status === 200) {
+      // EmailJS 설정이 완료되었는지 확인
+      if (serviceId && templateId && publicKey && 
+          serviceId !== 'your_service_id_here' && 
+          templateId !== 'your_template_id_here' && 
+          publicKey !== 'your_public_key_here') {
+        
+        // 실제 EmailJS 전송
+        const result = await emailjs.sendForm(
+          serviceId,
+          templateId,
+          formRef.current!,
+          publicKey
+        );
+
+        if (result.status === 200) {
+          setSubmitStatus('success');
+          setFormData({ name: '', email: '', message: '' });
+          setTimeout(() => setSubmitStatus('idle'), 3000);
+        } else {
+          setSubmitStatus('error');
+        }
+      } else {
+        // EmailJS 설정이 완료되지 않은 경우 임시 처리
+        await new Promise(resolve => setTimeout(resolve, 1500)); // 1.5초 대기
+        
         setSubmitStatus('success');
         setFormData({ name: '', email: '', message: '' });
         setTimeout(() => setSubmitStatus('idle'), 3000);
-      } else {
-        setSubmitStatus('error');
+        
+        // 개발용 콘솔 출력
+        console.log('폼 데이터:', formData);
+        console.log('실제 메일 전송을 원한다면 EmailJS 설정을 완료하세요.');
+        console.log('env.example 파일을 .env로 복사하고 실제 키 값을 입력하세요.');
       }
+      
     } catch (error) {
       console.error('Email send error:', error);
       setSubmitStatus('error');
